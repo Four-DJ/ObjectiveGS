@@ -11,6 +11,8 @@ const (
 	EOF
 	Namespace
 	Identifier
+	Class
+	CurlyOpen
 )
 
 type Token struct {
@@ -37,6 +39,8 @@ func Tokenize(input string) ([]Token, error) {
 			tokens = append(tokens, token)
 			textBuffer.Reset()
 			continue
+		case '{':
+			tokens = append(tokens, Token{Type: CurlyOpen})
 		default:
 			textBuffer.WriteRune(char)
 		}
@@ -50,6 +54,9 @@ func textTokenizer(input string) Token {
 	}
 	if input == "namespace" {
 		return Token{Type: Namespace}
+	}
+	if input == "class" {
+		return Token{Type: Class}
 	}
 	return Token{Type: Identifier, Value: input}
 }

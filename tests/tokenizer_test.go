@@ -40,6 +40,23 @@ func TestTokenize(t *testing.T) {
 			},
 			shouldError: false,
 		},
+		{
+			Case:  "valid Tokenization of clases",
+			Input: "class Test {",
+			Expected: []transpiler.Token{
+				{
+					Type: transpiler.Class,
+				},
+				{
+					Type:  transpiler.Identifier,
+					Value: "Test",
+				},
+				{
+					Type: transpiler.CurlyOpen,
+				},
+			},
+			shouldError: false,
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.Case, func(t *testing.T) {
