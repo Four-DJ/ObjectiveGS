@@ -52,13 +52,12 @@ func Tokenize(input string) ([]Token, error) {
 }
 
 func textTokenizer(input string) Token {
-	if input == "" {
+	switch input {
+	case "":
 		return Token{Type: Empty}
-	}
-	if input == "namespace" {
+	case "namespace":
 		return Token{Type: Namespace}
-	}
-	if input == "class" {
+	case "class":
 		return Token{Type: Class}
 	}
 	return Token{Type: Identifier, Value: input}
