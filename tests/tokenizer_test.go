@@ -57,6 +57,29 @@ func TestTokenize(t *testing.T) {
 			},
 			shouldError: false,
 		},
+		{
+			Case:  "valid Tokenization of functions",
+			Input: []string{"func test() {", "func test(){", "function test(){", "function test() {"},
+			Expected: []transpiler.Token{
+				{
+					Type: transpiler.Function,
+				},
+				{
+					Type:  transpiler.Identifier,
+					Value: "test",
+				},
+				{
+					Type: transpiler.BracketOpen,
+				},
+				{
+					Type: transpiler.BracketClose,
+				},
+				{
+					Type: transpiler.CurlyOpen,
+				},
+			},
+			shouldError: false,
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.Case, func(t *testing.T) {

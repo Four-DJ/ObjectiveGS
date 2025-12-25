@@ -14,6 +14,9 @@ const (
 	Identifier
 	Class
 	CurlyOpen
+	Function
+	BracketOpen
+	BracketClose
 )
 
 type Token struct {
@@ -45,6 +48,13 @@ func Tokenize(input string) ([]Token, error) {
 			continue
 		case '{':
 			tokens = append(tokens, Token{Type: CurlyOpen})
+			continue
+		case '(':
+			tokens = append(tokens, Token{Type: BracketOpen})
+			continue
+		case ')':
+			tokens = append(tokens, Token{Type: BracketClose})
+			continue
 		default:
 		}
 	}
@@ -59,6 +69,8 @@ func textTokenizer(input string) Token {
 		return Token{Type: Namespace}
 	case "class":
 		return Token{Type: Class}
+	case "func", "function":
+		return Token{Type: Function}
 	}
 	return Token{Type: Identifier, Value: input}
 }
