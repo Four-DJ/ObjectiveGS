@@ -34,6 +34,27 @@ func TestTokenize(t *testing.T) {
 			shouldError: false,
 		},
 		{
+			Case:  "valid Tokenization of varible declatation",
+			Input: []string{"test = 0;"},
+			Expected: []transpiler.Token{
+				{
+					Type:  transpiler.Identifier,
+					Value: "test",
+				},
+				{
+					Type: transpiler.Equals,
+				},
+				{
+					Type:  transpiler.Identifier,
+					Value: "0",
+				},
+				{
+					Type: transpiler.EOF,
+				},
+			},
+			shouldError: false,
+		},
+		{
 			Case:  "valid Tokenization of semicolon",
 			Input: []string{";"},
 			Expected: []transpiler.Token{

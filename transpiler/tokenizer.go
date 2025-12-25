@@ -9,6 +9,7 @@ type TokenType int
 
 const (
 	Empty TokenType = iota
+	Equals
 	EOF
 	Namespace
 	Identifier
@@ -33,7 +34,7 @@ func Tokenize(input string) ([]Token, error) {
 	var textBuffer strings.Builder
 
 	for _, char := range input {
-		if unicode.IsLetter(char) {
+		if unicode.IsLetter(char) || unicode.IsNumber(char) {
 			textBuffer.WriteRune(char)
 			continue
 		}
@@ -67,6 +68,9 @@ func Tokenize(input string) ([]Token, error) {
 			continue
 		case '!':
 			tokens = append(tokens, Token{Type: Not})
+			continue
+		case '=':
+			tokens = append(tokens, Token{Type: Equals})
 			continue
 		default:
 		}
