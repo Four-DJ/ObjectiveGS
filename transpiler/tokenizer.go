@@ -10,7 +10,7 @@ type TokenType int
 const (
 	Empty TokenType = iota
 	Equals
-	EOF
+	EOL
 	Namespace
 	Identifier
 	Class
@@ -22,6 +22,7 @@ const (
 	Or
 	And
 	Not
+	Slash
 )
 
 type Token struct {
@@ -46,8 +47,8 @@ func Tokenize(input string) ([]Token, error) {
 			}
 		}
 		switch char {
-		case ';':
-			tokens = append(tokens, Token{Type: EOF})
+		case ';', '\n':
+			tokens = append(tokens, Token{Type: EOL})
 			continue
 		case ' ':
 			continue
@@ -72,7 +73,18 @@ func Tokenize(input string) ([]Token, error) {
 		case '=':
 			tokens = append(tokens, Token{Type: Equals})
 			continue
+		case '/':
+			tokens = append(tokens, Token{Type: Slash})
+			continue
 		default:
+		}
+	}
+
+	if textBuffer.Len() > 0 {
+		token := textTokenizer(textBuffer.String())
+		if token.Type != Empty {
+			tokens = append(tokens, token)
+			textBuffer.Reset()
 		}
 	}
 	return tokens, nil
