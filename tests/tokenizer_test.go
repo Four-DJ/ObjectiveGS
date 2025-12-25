@@ -14,6 +14,26 @@ func TestTokenize(t *testing.T) {
 		shouldError bool
 	}{
 		{
+			Case:  "valid Tokenization of function call",
+			Input: []string{"test();"},
+			Expected: []transpiler.Token{
+				{
+					Type:  transpiler.Identifier,
+					Value: "test",
+				},
+				{
+					Type: transpiler.BracketOpen,
+				},
+				{
+					Type: transpiler.BracketClose,
+				},
+				{
+					Type: transpiler.EOF,
+				},
+			},
+			shouldError: false,
+		},
+		{
 			Case:  "valid Tokenization of semicolon",
 			Input: []string{";"},
 			Expected: []transpiler.Token{
