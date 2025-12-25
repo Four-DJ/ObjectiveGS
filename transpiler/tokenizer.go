@@ -2,6 +2,7 @@ package transpiler
 
 import (
 	"strings"
+	"unicode"
 )
 
 type TokenType int
@@ -25,24 +26,26 @@ func Tokenize(input string) ([]Token, error) {
 	var textBuffer strings.Builder
 
 	for _, char := range input {
-		switch char {
-		case ';':
+		if unicode.IsLetter(char) {
+			textBuffer.WriteRune(char)
+			continue
+		}
+		if textBuffer.Len() > 0 {
 			token := textTokenizer(textBuffer.String())
 			if token.Type != Empty {
 				tokens = append(tokens, token)
 				textBuffer.Reset()
 			}
+		}
+		switch char {
+		case ';':
 			tokens = append(tokens, Token{Type: EOF})
 			continue
 		case ' ':
-			token := textTokenizer(textBuffer.String())
-			tokens = append(tokens, token)
-			textBuffer.Reset()
 			continue
 		case '{':
 			tokens = append(tokens, Token{Type: CurlyOpen})
 		default:
-			textBuffer.WriteRune(char)
 		}
 	}
 	return tokens, nil
