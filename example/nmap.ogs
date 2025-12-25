@@ -28,7 +28,7 @@ if ports == null {
 if typeof(ports) == "string" { 
     exit(ports)
 }
-      
+
 info = "PORT STATE SERVICE VERSION LAN"   
 print("\nStarting nmap v1.1 at ${current_date}")
 print("Interesting ports on ${params[0]}\n")
