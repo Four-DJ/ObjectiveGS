@@ -80,6 +80,45 @@ func TestTokenize(t *testing.T) {
 			},
 			shouldError: false,
 		},
+		{
+			Case:  "valid Tokenization of if statement",
+			Input: []string{"if test || !test && test {"},
+			Expected: []transpiler.Token{
+				{
+					Type: transpiler.If,
+				},
+				{
+					Type:  transpiler.Identifier,
+					Value: "test",
+				},
+				{
+					Type: transpiler.Or,
+				},
+				{
+					Type: transpiler.Or,
+				},
+				{
+					Type: transpiler.Not,
+				},
+				{
+					Type:  transpiler.Identifier,
+					Value: "test",
+				},
+				{
+					Type: transpiler.And,
+				},
+				{
+					Type: transpiler.And,
+				},
+				{
+					Type:  transpiler.Identifier,
+					Value: "test",
+				},
+				{
+					Type: transpiler.CurlyOpen,
+				},
+			},
+		},
 	}
 	for _, test := range tests {
 		t.Run(test.Case, func(t *testing.T) {

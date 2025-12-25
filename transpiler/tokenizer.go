@@ -17,6 +17,10 @@ const (
 	Function
 	BracketOpen
 	BracketClose
+	If
+	Or
+	And
+	Not
 )
 
 type Token struct {
@@ -55,6 +59,15 @@ func Tokenize(input string) ([]Token, error) {
 		case ')':
 			tokens = append(tokens, Token{Type: BracketClose})
 			continue
+		case '|':
+			tokens = append(tokens, Token{Type: Or})
+			continue
+		case '&':
+			tokens = append(tokens, Token{Type: And})
+			continue
+		case '!':
+			tokens = append(tokens, Token{Type: Not})
+			continue
 		default:
 		}
 	}
@@ -71,6 +84,8 @@ func textTokenizer(input string) Token {
 		return Token{Type: Class}
 	case "func", "function":
 		return Token{Type: Function}
+	case "if":
+		return Token{Type: If}
 	}
 	return Token{Type: Identifier, Value: input}
 }
