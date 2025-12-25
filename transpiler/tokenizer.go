@@ -15,6 +15,7 @@ const (
 	Identifier
 	Class
 	CurlyOpen
+	CurlyClose
 	Function
 	BracketOpen
 	BracketClose
@@ -23,6 +24,8 @@ const (
 	And
 	Not
 	Slash
+	SquareOpen
+	SquareClose
 )
 
 type Token struct {
@@ -55,11 +58,20 @@ func Tokenize(input string) ([]Token, error) {
 		case '{':
 			tokens = append(tokens, Token{Type: CurlyOpen})
 			continue
+		case '}':
+			tokens = append(tokens, Token{Type: CurlyClose})
+			continue
 		case '(':
 			tokens = append(tokens, Token{Type: BracketOpen})
 			continue
 		case ')':
 			tokens = append(tokens, Token{Type: BracketClose})
+			continue
+		case '[':
+			tokens = append(tokens, Token{Type: SquareOpen})
+			continue
+		case ']':
+			tokens = append(tokens, Token{Type: SquareClose})
 			continue
 		case '|':
 			tokens = append(tokens, Token{Type: Or})

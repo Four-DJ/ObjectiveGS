@@ -14,7 +14,14 @@ func TestTokenize(t *testing.T) {
 		shouldError bool
 	}{
 		{
-			Case:  "skip Tokenization on Comment",
+			Case:  "valid Tokenization of array access",
+			Input: []string{"params[0]"},
+			Expected: []transpiler.Token{
+				{Type: transpiler.Identifier, Value: "params"}, {Type: transpiler.SquareOpen}, {Type: transpiler.Identifier, Value: "0"}, {Type: transpiler.SquareClose},
+			},
+		},
+		{
+			Case:  "valid Tokenization on Comment",
 			Input: []string{"//comment"},
 			Expected: []transpiler.Token{
 				{Type: transpiler.Slash}, {Type: transpiler.Slash}, {Type: transpiler.Identifier, Value: "comment"},
