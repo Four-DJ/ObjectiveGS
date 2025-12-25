@@ -17,14 +17,19 @@ func TestTokenize(t *testing.T) {
 			Case:  "valid Tokenization of array access",
 			Input: []string{"params[0]"},
 			Expected: []transpiler.Token{
-				{Type: transpiler.Identifier, Value: "params"}, {Type: transpiler.SquareOpen}, {Type: transpiler.Identifier, Value: "0"}, {Type: transpiler.SquareClose},
+				{Type: transpiler.Identifier, Value: "params"},
+				{Type: transpiler.SquareOpen},
+				{Type: transpiler.Identifier, Value: "0"},
+				{Type: transpiler.SquareClose},
 			},
 		},
 		{
 			Case:  "valid Tokenization on Comment",
 			Input: []string{"//comment"},
 			Expected: []transpiler.Token{
-				{Type: transpiler.Slash}, {Type: transpiler.Slash}, {Type: transpiler.Identifier, Value: "comment"},
+				{Type: transpiler.Slash},
+				{Type: transpiler.Slash},
+				{Type: transpiler.Identifier, Value: "comment"},
 			},
 			shouldError: false,
 		},
@@ -32,19 +37,10 @@ func TestTokenize(t *testing.T) {
 			Case:  "valid Tokenization of function call",
 			Input: []string{"test();"},
 			Expected: []transpiler.Token{
-				{
-					Type:  transpiler.Identifier,
-					Value: "test",
-				},
-				{
-					Type: transpiler.BracketOpen,
-				},
-				{
-					Type: transpiler.BracketClose,
-				},
-				{
-					Type: transpiler.EOL,
-				},
+				{Type: transpiler.Identifier, Value: "test"},
+				{Type: transpiler.BracketOpen},
+				{Type: transpiler.BracketClose},
+				{Type: transpiler.EOL},
 			},
 			shouldError: false,
 		},
@@ -52,20 +48,10 @@ func TestTokenize(t *testing.T) {
 			Case:  "valid Tokenization of varible declatation",
 			Input: []string{"test = 0;"},
 			Expected: []transpiler.Token{
-				{
-					Type:  transpiler.Identifier,
-					Value: "test",
-				},
-				{
-					Type: transpiler.Equals,
-				},
-				{
-					Type:  transpiler.Identifier,
-					Value: "0",
-				},
-				{
-					Type: transpiler.EOL,
-				},
+				{Type: transpiler.Identifier, Value: "test"},
+				{Type: transpiler.Equals},
+				{Type: transpiler.Identifier, Value: "0"},
+				{Type: transpiler.EOL},
 			},
 			shouldError: false,
 		},
@@ -73,9 +59,7 @@ func TestTokenize(t *testing.T) {
 			Case:  "valid Tokenization of semicolon",
 			Input: []string{";"},
 			Expected: []transpiler.Token{
-				{
-					Type: transpiler.EOL,
-				},
+				{Type: transpiler.EOL},
 			},
 			shouldError: false,
 		},
@@ -83,16 +67,9 @@ func TestTokenize(t *testing.T) {
 			Case:  "valid Tokenization of namespace",
 			Input: []string{"namespace Test;"},
 			Expected: []transpiler.Token{
-				{
-					Type: transpiler.Namespace,
-				},
-				{
-					Type:  transpiler.Identifier,
-					Value: "Test",
-				},
-				{
-					Type: transpiler.EOL,
-				},
+				{Type: transpiler.Namespace},
+				{Type: transpiler.Identifier, Value: "Test"},
+				{Type: transpiler.EOL},
 			},
 			shouldError: false,
 		},
@@ -100,16 +77,9 @@ func TestTokenize(t *testing.T) {
 			Case:  "valid Tokenization of clases",
 			Input: []string{"class Test {", "class Test{"},
 			Expected: []transpiler.Token{
-				{
-					Type: transpiler.Class,
-				},
-				{
-					Type:  transpiler.Identifier,
-					Value: "Test",
-				},
-				{
-					Type: transpiler.CurlyOpen,
-				},
+				{Type: transpiler.Class},
+				{Type: transpiler.Identifier, Value: "Test"},
+				{Type: transpiler.CurlyOpen},
 			},
 			shouldError: false,
 		},
@@ -117,22 +87,11 @@ func TestTokenize(t *testing.T) {
 			Case:  "valid Tokenization of functions",
 			Input: []string{"func test() {", "func test(){", "function test(){", "function test() {"},
 			Expected: []transpiler.Token{
-				{
-					Type: transpiler.Function,
-				},
-				{
-					Type:  transpiler.Identifier,
-					Value: "test",
-				},
-				{
-					Type: transpiler.BracketOpen,
-				},
-				{
-					Type: transpiler.BracketClose,
-				},
-				{
-					Type: transpiler.CurlyOpen,
-				},
+				{Type: transpiler.Function},
+				{Type: transpiler.Identifier, Value: "test"},
+				{Type: transpiler.BracketOpen},
+				{Type: transpiler.BracketClose},
+				{Type: transpiler.CurlyOpen},
 			},
 			shouldError: false,
 		},
@@ -140,39 +99,16 @@ func TestTokenize(t *testing.T) {
 			Case:  "valid Tokenization of if statement",
 			Input: []string{"if test || !test && test {"},
 			Expected: []transpiler.Token{
-				{
-					Type: transpiler.If,
-				},
-				{
-					Type:  transpiler.Identifier,
-					Value: "test",
-				},
-				{
-					Type: transpiler.Or,
-				},
-				{
-					Type: transpiler.Or,
-				},
-				{
-					Type: transpiler.Not,
-				},
-				{
-					Type:  transpiler.Identifier,
-					Value: "test",
-				},
-				{
-					Type: transpiler.And,
-				},
-				{
-					Type: transpiler.And,
-				},
-				{
-					Type:  transpiler.Identifier,
-					Value: "test",
-				},
-				{
-					Type: transpiler.CurlyOpen,
-				},
+				{Type: transpiler.If},
+				{Type: transpiler.Identifier, Value: "test"},
+				{Type: transpiler.Or},
+				{Type: transpiler.Or},
+				{Type: transpiler.Not},
+				{Type: transpiler.Identifier, Value: "test"},
+				{Type: transpiler.And},
+				{Type: transpiler.And},
+				{Type: transpiler.Identifier, Value: "test"},
+				{Type: transpiler.CurlyOpen},
 			},
 		},
 	}
