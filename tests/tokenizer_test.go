@@ -14,6 +14,14 @@ func TestTokenize(t *testing.T) {
 		shouldError bool
 	}{
 		{
+			Case:  "skip Tokenization on Comment",
+			Input: []string{"//comment"},
+			Expected: []transpiler.Token{
+				{Type: transpiler.Slash}, {Type: transpiler.Slash}, {Type: transpiler.Identifier, Value: "comment"},
+			},
+			shouldError: false,
+		},
+		{
 			Case:  "valid Tokenization of function call",
 			Input: []string{"test();"},
 			Expected: []transpiler.Token{
@@ -28,7 +36,7 @@ func TestTokenize(t *testing.T) {
 					Type: transpiler.BracketClose,
 				},
 				{
-					Type: transpiler.EOF,
+					Type: transpiler.EOL,
 				},
 			},
 			shouldError: false,
@@ -49,7 +57,7 @@ func TestTokenize(t *testing.T) {
 					Value: "0",
 				},
 				{
-					Type: transpiler.EOF,
+					Type: transpiler.EOL,
 				},
 			},
 			shouldError: false,
@@ -59,7 +67,7 @@ func TestTokenize(t *testing.T) {
 			Input: []string{";"},
 			Expected: []transpiler.Token{
 				{
-					Type: transpiler.EOF,
+					Type: transpiler.EOL,
 				},
 			},
 			shouldError: false,
@@ -76,7 +84,7 @@ func TestTokenize(t *testing.T) {
 					Value: "Test",
 				},
 				{
-					Type: transpiler.EOF,
+					Type: transpiler.EOL,
 				},
 			},
 			shouldError: false,
