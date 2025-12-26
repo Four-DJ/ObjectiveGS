@@ -27,6 +27,7 @@ const (
 	SquareOpen
 	SquareClose
 	Quote
+	Dot
 )
 
 type Token struct {
@@ -39,7 +40,7 @@ func Tokenize(input string) ([]Token, error) {
 	var textBuffer strings.Builder
 
 	for _, char := range input {
-		if unicode.IsLetter(char) || unicode.IsNumber(char) {
+		if unicode.IsLetter(char) || unicode.IsNumber(char) || char == '_' {
 			textBuffer.WriteRune(char)
 			continue
 		}
@@ -58,6 +59,9 @@ func Tokenize(input string) ([]Token, error) {
 			continue
 		case '"':
 			tokens = append(tokens, Token{Type: Quote})
+			continue
+		case '.':
+			tokens = append(tokens, Token{Type: Dot})
 			continue
 		case '{':
 			tokens = append(tokens, Token{Type: CurlyOpen})

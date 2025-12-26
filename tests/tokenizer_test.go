@@ -14,6 +14,17 @@ func TestTokenize(t *testing.T) {
 		shouldError bool
 	}{
 		{
+			Case:  "valid Tokenization of function call",
+			Input: []string{"router.used_ports()"},
+			Expected: []transpiler.Token{
+				{Type: transpiler.Identifier, Value: "router"},
+				{Type: transpiler.Dot},
+				{Type: transpiler.Identifier, Value: "used_ports"},
+				{Type: transpiler.BracketOpen},
+				{Type: transpiler.BracketClose},
+			},
+		},
+		{
 			Case:  "valid Tokenization of string",
 			Input: []string{"test = \"test\";"},
 			Expected: []transpiler.Token{
