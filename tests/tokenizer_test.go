@@ -14,6 +14,28 @@ func TestTokenize(t *testing.T) {
 		shouldError bool
 	}{
 		{
+			Case:  "valid Tokenization of Inline If's",
+			Input: []string{"ports = isLanIp ? router.device_ports(ipAddress) : router.used_ports()"},
+			Expected: []transpiler.Token{
+				{Type: transpiler.Identifier, Value: "ports"},
+				{Type: transpiler.Equals},
+				{Type: transpiler.Identifier, Value: "isLanIp"},
+				{Type: transpiler.QuestionMark},
+				{Type: transpiler.Identifier, Value: "router"},
+				{Type: transpiler.Dot},
+				{Type: transpiler.Identifier, Value: "device_ports"},
+				{Type: transpiler.BracketOpen},
+				{Type: transpiler.Identifier, Value: "ipAddress"},
+				{Type: transpiler.BracketClose},
+				{Type: transpiler.Colen},
+				{Type: transpiler.Identifier, Value: "router"},
+				{Type: transpiler.Dot},
+				{Type: transpiler.Identifier, Value: "used_ports"},
+				{Type: transpiler.BracketOpen},
+				{Type: transpiler.BracketClose},
+			},
+		},
+		{
 			Case:  "valid Tokenization of function call",
 			Input: []string{"router.used_ports()"},
 			Expected: []transpiler.Token{

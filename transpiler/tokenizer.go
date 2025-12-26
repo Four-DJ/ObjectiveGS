@@ -28,6 +28,8 @@ const (
 	SquareClose
 	Quote
 	Dot
+	QuestionMark
+	Colen
 )
 
 type Token struct {
@@ -60,8 +62,14 @@ func Tokenize(input string) ([]Token, error) {
 		case '"':
 			tokens = append(tokens, Token{Type: Quote})
 			continue
+		case '?':
+			tokens = append(tokens, Token{Type: QuestionMark})
+			continue
 		case '.':
 			tokens = append(tokens, Token{Type: Dot})
+			continue
+		case ':':
+			tokens = append(tokens, Token{Type: Colen})
 			continue
 		case '{':
 			tokens = append(tokens, Token{Type: CurlyOpen})
