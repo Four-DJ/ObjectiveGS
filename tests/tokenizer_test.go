@@ -165,7 +165,7 @@ func TestTokenize(t *testing.T) {
 					t.Errorf("%s failed because of triggered error: \n%s", test.Case, err)
 				}
 				if !reflect.DeepEqual(actual, test.Expected) {
-					t.Errorf("%s failed because \nexpected:\n%v\nactual:\n%v", test.Case, test.Expected, actual)
+					t.Errorf("%s failed because\ninput: %v\nexpected:\n%v\nactual:\n%v", test.Case, test.Input, test.Expected, actual)
 				}
 			}
 		})
