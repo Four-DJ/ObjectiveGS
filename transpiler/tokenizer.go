@@ -2,7 +2,6 @@ package transpiler
 
 import (
 	"strings"
-	"unicode"
 )
 
 type TokenType int
@@ -42,94 +41,71 @@ func Tokenize(input string) ([]Token, error) {
 	var textBuffer strings.Builder
 
 	for _, char := range input {
-		if unicode.IsLetter(char) || unicode.IsNumber(char) || char == '_' {
-			textBuffer.WriteRune(char)
-			continue
-		}
-		if textBuffer.Len() > 0 {
-			token := textTokenizer(textBuffer.String())
-			if token.Type != Empty {
-				tokens = append(tokens, token)
-				textBuffer.Reset()
-			}
-		}
 		switch char {
 		case ';', '\n':
-			tokens = append(tokens, Token{Type: EOL})
-			continue
+			tokens = textTokenizer(tokens, &textBuffer, Token{Type: EOL})
 		case ' ':
-			continue
+			tokens = textTokenizer(tokens, &textBuffer, Token{})
 		case '"':
-			tokens = append(tokens, Token{Type: Quote})
-			continue
+			tokens = textTokenizer(tokens, &textBuffer, Token{Type: Quote})
 		case '?':
-			tokens = append(tokens, Token{Type: QuestionMark})
-			continue
+			tokens = textTokenizer(tokens, &textBuffer, Token{Type: QuestionMark})
 		case '.':
-			tokens = append(tokens, Token{Type: Dot})
-			continue
+			tokens = textTokenizer(tokens, &textBuffer, Token{Type: Dot})
 		case ':':
-			tokens = append(tokens, Token{Type: Colen})
-			continue
+			tokens = textTokenizer(tokens, &textBuffer, Token{Type: Colen})
 		case '{':
-			tokens = append(tokens, Token{Type: CurlyOpen})
-			continue
+			tokens = textTokenizer(tokens, &textBuffer, Token{Type: CurlyOpen})
 		case '}':
-			tokens = append(tokens, Token{Type: CurlyClose})
-			continue
+			tokens = textTokenizer(tokens, &textBuffer, Token{Type: CurlyClose})
 		case '(':
-			tokens = append(tokens, Token{Type: BracketOpen})
-			continue
+			tokens = textTokenizer(tokens, &textBuffer, Token{Type: BracketOpen})
 		case ')':
-			tokens = append(tokens, Token{Type: BracketClose})
-			continue
+			tokens = textTokenizer(tokens, &textBuffer, Token{Type: BracketClose})
 		case '[':
-			tokens = append(tokens, Token{Type: SquareOpen})
-			continue
+			tokens = textTokenizer(tokens, &textBuffer, Token{Type: SquareOpen})
 		case ']':
-			tokens = append(tokens, Token{Type: SquareClose})
-			continue
+			tokens = textTokenizer(tokens, &textBuffer, Token{Type: SquareClose})
 		case '|':
-			tokens = append(tokens, Token{Type: Or})
-			continue
+			tokens = textTokenizer(tokens, &textBuffer, Token{Type: Or})
 		case '&':
-			tokens = append(tokens, Token{Type: And})
-			continue
+			tokens = textTokenizer(tokens, &textBuffer, Token{Type: And})
 		case '!':
-			tokens = append(tokens, Token{Type: Not})
-			continue
+			tokens = textTokenizer(tokens, &textBuffer, Token{Type: Not})
 		case '=':
-			tokens = append(tokens, Token{Type: Equals})
-			continue
+			tokens = textTokenizer(tokens, &textBuffer, Token{Type: Equals})
 		case '/':
-			tokens = append(tokens, Token{Type: Slash})
-			continue
+			tokens = textTokenizer(tokens, &textBuffer, Token{Type: Slash})
 		default:
+			textBuffer.WriteRune(char)
 		}
 	}
 
-	if textBuffer.Len() > 0 {
-		token := textTokenizer(textBuffer.String())
-		if token.Type != Empty {
-			tokens = append(tokens, token)
-			textBuffer.Reset()
-		}
-	}
+	tokens = textTokenizer(tokens, &textBuffer, Token{})
 	return tokens, nil
 }
 
-func textTokenizer(input string) Token {
-	switch input {
-	case "":
-		return Token{Type: Empty}
+func textTokenizer(tokens []Token, textBuffer *strings.Builder, token Token) []Token {
+	var textToken Token
+	switch textBuffer.String() {
 	case "namespace":
-		return Token{Type: Namespace}
+		textToken = Token{Type: Namespace}
 	case "class":
-		return Token{Type: Class}
+		textToken = Token{Type: Class}
 	case "func", "function":
-		return Token{Type: Function}
+		textToken = Token{Type: Function}
 	case "if":
-		return Token{Type: If}
+		textToken = Token{Type: If}
+	default:
+		textToken = Token{Type: Identifier, Value: textBuffer.String()}
 	}
-	return Token{Type: Identifier, Value: input}
+
+	if textBuffer.Len() > 0 {
+		tokens = append(tokens, textToken)
+	}
+	if token.Type != Empty {
+		tokens = append(tokens, token)
+	}
+	textBuffer.Reset()
+	return tokens
 }
