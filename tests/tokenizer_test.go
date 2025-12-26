@@ -14,6 +14,18 @@ func TestTokenize(t *testing.T) {
 		shouldError bool
 	}{
 		{
+			Case:  "valid Tokenization of string",
+			Input: []string{"test = \"test\";"},
+			Expected: []transpiler.Token{
+				{Type: transpiler.Identifier, Value: "test"},
+				{Type: transpiler.Equals},
+				{Type: transpiler.Quote},
+				{Type: transpiler.Identifier, Value: "test"},
+				{Type: transpiler.Quote},
+				{Type: transpiler.EOL},
+			},
+		},
+		{
 			Case:  "valid Tokenization of array access",
 			Input: []string{"params[0]"},
 			Expected: []transpiler.Token{

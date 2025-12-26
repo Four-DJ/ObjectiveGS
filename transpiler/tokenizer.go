@@ -26,6 +26,7 @@ const (
 	Slash
 	SquareOpen
 	SquareClose
+	Quote
 )
 
 type Token struct {
@@ -54,6 +55,9 @@ func Tokenize(input string) ([]Token, error) {
 			tokens = append(tokens, Token{Type: EOL})
 			continue
 		case ' ':
+			continue
+		case '"':
+			tokens = append(tokens, Token{Type: Quote})
 			continue
 		case '{':
 			tokens = append(tokens, Token{Type: CurlyOpen})
